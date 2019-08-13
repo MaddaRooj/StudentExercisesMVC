@@ -8,32 +8,33 @@ namespace StudentExercisesMVC.Models
 {
     public class Student
     {
-        [Required]
-        [Display(Name = "StudentId")]
-        public int Id { get; set; }
+        [Display(Name = "Student Id")]
+        public int? Id { get; set; }
 
         [Required]
-        [Display(Name = "FirstName")]
+        [MaxLength(10)]
+        [Display(Name = "First Name")]
 
         public string FirstName { get; set; }
 
         [Required]
-        [Display(Name = "LastName")]
+        [MaxLength(10)]
+        [Display(Name = "Last Name")]
 
         public string LastName { get; set; }
 
         [Required]
-        [Display(Name = "SlackHandle")]
+        [MinLength(2)]
+        [Display(Name = "Slack Handle")]
 
         public string SlackHandle { get; set; }
 
         [Required]
-        [Display(Name = "CohortId")]
+        [Display(Name = "Cohort Id")]
 
         public int CohortId { get; set; }
 
-        [Required]
-        [Display(Name = "FullName")]
+        [Display(Name = "Full Name")]
 
         public string FullName
         {
