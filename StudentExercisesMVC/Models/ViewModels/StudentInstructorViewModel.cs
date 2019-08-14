@@ -3,7 +3,7 @@ using StudentExercisesMVC.Models;
 using System.Data.SqlClient;
 using System.Collections.Generic;
 
-namespace StudentExercises.Models.ViewModels
+namespace StudentExercisesMVC.Models.ViewModels
 {
     public class StudentInstructorViewModel
     {
@@ -41,7 +41,8 @@ namespace StudentExercises.Models.ViewModels
                             FirstName,
                             LastName,
                             SlackHandle
-                        FROM Student";
+                        FROM Student
+                        ORDER BY LastName";
                     SqlDataReader reader = cmd.ExecuteReader();
 
                     Students = new List<Student>();
@@ -74,7 +75,8 @@ namespace StudentExercises.Models.ViewModels
                             FirstName,
                             LastName,
                             SlackHandle
-                        FROM Instructor";
+                        FROM Instructor
+                        ORDER BY LastName";
                     SqlDataReader reader = cmd.ExecuteReader();
 
                     Instructors = new List<Instructor>();

@@ -10,7 +10,7 @@ using Microsoft.Extensions.Configuration;
 using StudentExercises.Models.ViewModels;
 using StudentExercisesMVC.Models;
 
-namespace StudentExercises.Controllers
+namespace StudentExercisesMVC.Controllers
 {
     public class StudentsController : Controller
     {
@@ -41,6 +41,7 @@ namespace StudentExercises.Controllers
                     cmd.CommandText = @"
                         SELECT Id, FirstName, LastName, SlackHandle, CohortId
                         FROM Student
+                        ORDER BY Id
                     ";
 
                     SqlDataReader reader = cmd.ExecuteReader();
@@ -59,7 +60,6 @@ namespace StudentExercises.Controllers
                     reader.Close();
                 }
             }
-
             return View(students);
         }
 
@@ -94,7 +94,6 @@ namespace StudentExercises.Controllers
                     }
                 }
             }
-
             return View(student);
         }
 
@@ -165,51 +164,51 @@ namespace StudentExercises.Controllers
             }
         }
 
-        // GET: Students/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
+        //// GET: Students/Edit/5
+        //public ActionResult Edit(int id)
+        //{
+        //    return View();
+        //}
 
-        // POST: Students/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
+        //// POST: Students/Edit/5
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult Edit(int id, IFormCollection collection)
+        //{
+        //    try
+        //    {
+        //        // TODO: Add update logic here
 
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    catch
+        //    {
+        //        return View();
+        //    }
+        //}
 
         // GET: Students/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
+        //public ActionResult Delete(int id)
+        //{
+        //    return View();
+        //}
 
         // POST: Students/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult Delete(int id, IFormCollection collection)
+        //{
+        //    try
+        //    {
+        //        // TODO: Add delete logic here
 
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    catch
+        //    {
+        //        return View();
+        //    }
+        //}
 
         private List<Cohort> GetAllCohorts()
         {
