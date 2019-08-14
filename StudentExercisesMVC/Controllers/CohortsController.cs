@@ -110,7 +110,6 @@ namespace StudentExercisesMVC.Controllers
                 using (SqlConnection conn = Connection)
                 {
                     conn.Open();
-
                     using (SqlCommand cmd = conn.CreateCommand())
                     {
                         cmd.CommandText = @"
@@ -120,13 +119,10 @@ namespace StudentExercisesMVC.Controllers
                                 @name
                             )
                         ";
-
                         cmd.Parameters.AddWithValue("@name", cohort.Name);
-
                         cmd.ExecuteNonQuery();
                     }
                 }
-
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -162,7 +158,6 @@ namespace StudentExercisesMVC.Controllers
         [HttpGet]
         public ActionResult Delete(int id)
         {
-            var viewModel = new CohortDeleteViewModel();
             var cohort = GetOneCohort(id);
             return View(cohort);
         }
@@ -211,9 +206,7 @@ namespace StudentExercisesMVC.Controllers
                         cohort.Id = reader.GetInt32(reader.GetOrdinal("Id"));
                         cohort.Name = reader.GetString(reader.GetOrdinal("Name"));
                     };
-
                     reader.Close();
-
                     return cohort;
                 }
             }

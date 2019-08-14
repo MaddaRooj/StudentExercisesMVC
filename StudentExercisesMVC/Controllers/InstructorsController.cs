@@ -7,16 +7,16 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Configuration;
-using StudentExercisesMVC.Models.ViewModels;
 using StudentExercisesMVC.Models;
+using StudentExercisesMVC.Models.ViewModels;
 
 namespace StudentExercisesMVC.Controllers
 {
-    public class StudentsController : Controller
+    public class InstructorsController : Controller
     {
         private readonly IConfiguration _config;
 
-        public StudentsController(IConfiguration config)
+        public InstructorsController(IConfiguration config)
         {
             _config = config;
         }
@@ -29,10 +29,10 @@ namespace StudentExercisesMVC.Controllers
             }
         }
 
-        // GET: Students
+        // GET: Instructor
         public ActionResult Index()
         {
-            var students = new List<Student>();
+            var instructors = new List<Instructor>();
             using (SqlConnection conn = Connection)
             {
                 conn.Open();
@@ -40,7 +40,7 @@ namespace StudentExercisesMVC.Controllers
                 {
                     cmd.CommandText = @"
                         SELECT Id, FirstName, LastName, SlackHandle, CohortId
-                        FROM Student
+                        FROM Instructor
                         ORDER BY Id
                     ";
 
@@ -48,7 +48,7 @@ namespace StudentExercisesMVC.Controllers
 
                     while (reader.Read())
                     {
-                        students.Add(new Student()
+                        instructors.Add(new Instructor()
                         {
                             Id = reader.GetInt32(reader.GetOrdinal("Id")),
                             FirstName = reader.GetString(reader.GetOrdinal("FirstName")),
@@ -60,13 +60,13 @@ namespace StudentExercisesMVC.Controllers
                     reader.Close();
                 }
             }
-            return View(students);
+            return View(instructors);
         }
 
-        // GET: Students/Details/5
+        // GET: Instructor/Details/5
         public ActionResult Details(int id)
         {
-            Student student = null;
+            Instructor instructor = null;
             using (SqlConnection conn = Connection)
             {
                 conn.Open();
@@ -74,7 +74,7 @@ namespace StudentExercisesMVC.Controllers
                 {
                     cmd.CommandText = @"
                         SELECT Id, FirstName, LastName, SlackHandle, CohortId
-                        FROM Student
+                        FROM Instructor
                         WHERE Id = @id
                     ";
 
@@ -83,7 +83,7 @@ namespace StudentExercisesMVC.Controllers
 
                     if (reader.Read())
                     {
-                        student = new Student()
+                        instructor = new Instructor()
                         {
                             Id = reader.GetInt32(reader.GetOrdinal("Id")),
                             FirstName = reader.GetString(reader.GetOrdinal("FirstName")),
@@ -94,14 +94,13 @@ namespace StudentExercisesMVC.Controllers
                     }
                 }
             }
-            return View(student);
+            return View(instructor);
         }
 
-        // GET: Students/Create
-        [HttpGet]
+        // GET: Instructor/Create
         public ActionResult Create()
         {
-            var viewModel = new StudentCreateViewModel();
+            var viewModel = new InstructorCreateViewModel();
             var cohorts = GetAllCohorts();
             var selectItems = cohorts
                 .Select(cohort => new SelectListItem
@@ -120,10 +119,10 @@ namespace StudentExercisesMVC.Controllers
             return View(viewModel);
         }
 
-        // POST: Students/Create
+        // POST: Instructor/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Student student)
+        public ActionResult Create(Instructor instructor)
         {
             try
             {
@@ -134,7 +133,7 @@ namespace StudentExercisesMVC.Controllers
                     using (SqlCommand cmd = conn.CreateCommand())
                     {
                         cmd.CommandText = @"
-                            INSERT INTO Student (
+                            INSERT INTO Instructor (
                                 FirstName, 
                                 LastName, 
                                 SlackHandle,
@@ -146,16 +145,13 @@ namespace StudentExercisesMVC.Controllers
                                 @cohortId
                             )
                         ";
-
-                        cmd.Parameters.AddWithValue("@firstName", student.FirstName);
-                        cmd.Parameters.AddWithValue("@lastName", student.LastName);
-                        cmd.Parameters.AddWithValue("@slackHandle", student.SlackHandle);
-                        cmd.Parameters.AddWithValue("@cohortId", student.CohortId);
-
+                        cmd.Parameters.AddWithValue("@firstName", instructor.FirstName);
+                        cmd.Parameters.AddWithValue("@lastName", instructor.LastName);
+                        cmd.Parameters.AddWithValue("@slackHandle", instructor.SlackHandle);
+                        cmd.Parameters.AddWithValue("@cohortId", instructor.CohortId);
                         cmd.ExecuteNonQuery();
                     }
                 }
-
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -164,13 +160,13 @@ namespace StudentExercisesMVC.Controllers
             }
         }
 
-        //// GET: Students/Edit/5
+        //// GET: Instructor/Edit/5
         //public ActionResult Edit(int id)
         //{
         //    return View();
         //}
 
-        //// POST: Students/Edit/5
+        //// POST: Instructor/Edit/5
         //[HttpPost]
         //[ValidateAntiForgeryToken]
         //public ActionResult Edit(int id, IFormCollection collection)
@@ -187,13 +183,13 @@ namespace StudentExercisesMVC.Controllers
         //    }
         //}
 
-        // GET: Students/Delete/5
+        //// GET: Instructor/Delete/5
         //public ActionResult Delete(int id)
         //{
         //    return View();
         //}
 
-        // POST: Students/Delete/5
+        //// POST: Instructor/Delete/5
         //[HttpPost]
         //[ValidateAntiForgeryToken]
         //public ActionResult Delete(int id, IFormCollection collection)
@@ -229,9 +225,7 @@ namespace StudentExercisesMVC.Controllers
                             Name = reader.GetString(reader.GetOrdinal("Name")),
                         });
                     }
-
                     reader.Close();
-
                     return cohorts;
                 }
             }

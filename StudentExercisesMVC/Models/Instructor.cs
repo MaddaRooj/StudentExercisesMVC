@@ -10,7 +10,7 @@ namespace StudentExercisesMVC.Models
     {
         [Required]
         [Display(Name = "InstructorId")]
-        public int Id { get; set; }
+        public int? Id { get; set; }
 
         [Required]
         [Display(Name = "First Name")]
@@ -30,11 +30,9 @@ namespace StudentExercisesMVC.Models
         [Required]
         [Display(Name = "Cohort Id")]
 
-        public int CohortId { get; set; }
+        public int? CohortId { get; set; }
 
-        [Required]
         [Display(Name = "Full Name")]
-
         public string FullName
         {
             get
