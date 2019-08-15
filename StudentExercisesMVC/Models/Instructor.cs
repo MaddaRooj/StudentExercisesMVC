@@ -9,7 +9,7 @@ namespace StudentExercisesMVC.Models
     public class Instructor
     {
         [Required]
-        [Display(Name = "InstructorId")]
+        [Display(Name = "Instructor Id")]
         public int? Id { get; set; }
 
         [Required]
@@ -26,6 +26,9 @@ namespace StudentExercisesMVC.Models
         [Display(Name = "Slack Handle")]
 
         public string SlackHandle { get; set; }
+
+        [Display(Name = "Special Move")]
+        public string Specialty { get; set; }
 
         [Required]
         [Display(Name = "Cohort Id")]
