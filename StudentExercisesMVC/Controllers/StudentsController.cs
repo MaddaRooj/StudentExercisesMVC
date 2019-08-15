@@ -164,28 +164,51 @@ namespace StudentExercisesMVC.Controllers
             }
         }
 
-        //// GET: Students/Edit/5
-        //public ActionResult Edit(int id)
-        //{
-        //    return View();
-        //}
+        // GET: Students/Edit/5
+        public ActionResult Edit(int id)
+        {
+            var student = GetOneStudent(id);
+            var cohorts = GetAllCohorts();
+            var viewModel = new StudentEditViewModel(student, cohorts);
+            return View(viewModel);
+        }
 
-        //// POST: Students/Edit/5
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Edit(int id, IFormCollection collection)
-        //{
-        //    try
-        //    {
-        //        // TODO: Add update logic here
+        // POST: Students/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(int id, StudentEditViewModel model)
+        {
+            try
+            {
+                using (SqlConnection conn = Connection)
+                {
+                    conn.Open();
+                    using (SqlCommand cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandText = @"UPDATE Student 
+                                            SET
+                                                FirstName = @firstName,
+                                                LastName = @lastName,
+                                                SlackHandle = @slackHandle,
+                                                CohortId = @cohortId
+                                            WHERE Id = @id";
 
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    catch
-        //    {
-        //        return View();
-        //    }
-        //}
+                        cmd.Parameters.AddWithValue("@id", id);
+                        cmd.Parameters.AddWithValue("@firstName", model.Student.FirstName);
+                        cmd.Parameters.AddWithValue("@lastName", model.Student.LastName);
+                        cmd.Parameters.AddWithValue("@slackHandle", model.Student.SlackHandle);
+                        cmd.Parameters.AddWithValue("@cohortId", model.Student.CohortId);
+                        cmd.ExecuteNonQuery();
+
+                        return RedirectToAction(nameof(Index));
+                    }
+                }
+            }
+            catch
+            {
+                return View();
+            }
+        }
 
         //GET: Students/Delete/5
         public ActionResult Delete(int id)
@@ -207,7 +230,11 @@ namespace StudentExercisesMVC.Controllers
 
                     using (SqlCommand cmd = conn.CreateCommand())
                     {
-                        cmd.CommandText = @"DELETE FROM Student WHERE Id = @id";
+                        cmd.CommandText = @"DELETE FROM StudentExercise
+                                            WHERE StudentId = @id;
+
+                                            DELETE FROM Student 
+                                            WHERE Id = @id";
                         cmd.Parameters.Add(new SqlParameter("@id", id));
                         cmd.ExecuteNonQuery();
                     }

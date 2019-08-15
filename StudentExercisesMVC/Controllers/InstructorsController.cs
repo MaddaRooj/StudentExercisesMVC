@@ -234,7 +234,9 @@ namespace StudentExercisesMVC.Controllers
 
                     using (SqlCommand cmd = conn.CreateCommand())
                     {
-                        cmd.CommandText = @"DELETE FROM StudentExercise
+                        cmd.CommandText = @"UPDATE StudentExercise
+                                            SET 
+                                                InstructorId = 1
                                             WHERE InstructorId = @id;
 
                                             DELETE FROM Instructor 
